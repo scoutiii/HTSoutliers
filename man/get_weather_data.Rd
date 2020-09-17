@@ -4,7 +4,11 @@
 \alias{get_weather_data}
 \title{Get Weather Data From the GHCN-D}
 \usage{
-get_weather_data(locations, path, ...)
+get_weather_data(
+  locations,
+  path = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/",
+  ...
+)
 }
 \arguments{
 \item{locations}{character}
