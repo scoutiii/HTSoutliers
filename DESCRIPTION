@@ -1,15 +1,15 @@
 Package: HTSoutliers
-Title: What the Package Does (One Line, Title Case)
+Title: Hrydological and Time Series Outlier Detection Methods
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Scout",
+           family = "Jarman",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "scoutjarman@yahoo.com")
+Description: This package was created to hold all code produced during Scout's
+    URCO grant research into detecting outliers in snow depth data from the
+    Global Historical Climatalogical Network Daily (GHCN-D).
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
