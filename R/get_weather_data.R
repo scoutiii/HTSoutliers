@@ -18,5 +18,6 @@
 get_weather_data <- function(locations,
                              path = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/",
                              ...) {
+    # Now I have changed something
     snowload2::get_station_data(locations, path, ...)
 }
