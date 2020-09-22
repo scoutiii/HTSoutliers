@@ -20,6 +20,8 @@ Imports:
     snowload2,
     dplyr,
     datasets,
-    base
+    base,
+    lubridate,
+    magrittr
 Depends: 
     R (>= 2.10)

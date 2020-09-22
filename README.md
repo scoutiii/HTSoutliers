@@ -39,6 +39,8 @@ lie outside of those states, and include a desired ecoregion.
 library(HTSoutliers)
 
 data <- get_weather_data(c("BF1BI000001", "BF1EG000001"), progress = FALSE)
+#> [1] "BF1BI000001"
+#> [1] "BF1EG000001"
 head(data)
 #>             ID       DATE ELEMENT VALUE MFLAG QFLAG SFLAG
 #> 23 BF1BI000001 2020-03-23    WESD    13                 N
