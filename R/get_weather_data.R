@@ -5,6 +5,8 @@
 #' You can enter in a list containing states, station IDS, and eco regions
 #' all at once, and get the weather data from all of them in one data frame.
 #'
+#' NOTE: ECO REGIONS NOT SUPPORTED YET
+#'
 #'
 #' @param locations character
 #' @param path character
@@ -18,7 +20,28 @@
 get_weather_data <- function(locations,
                              path = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/",
                              ...) {
-    # Now I have changed something
-    #
-    snowload2::get_station_data(locations, path, ...)
+
+    final_data <- NULL
+
+    for (location in locations) {
+        print(location)
+        new_data <- NULL
+        if (base::toupper(location) %in% datasets::state.abb) {
+            new_data <- snowload2::get_state_data(location, path, ...)
+        }
+        else if (location %in% snowload2::ghcnd_stations$ID) {
+            new_data <- snowload2::get_station_data(location, path, ...)
+        }
+
+        if (base::is.null(final_data)) {
+            final_data <- new_data
+        }
+        else {
+            if (!base::is.null(new_data)) {
+                final_data <- dplyr::union(final_data, new_data)
+            }
+        }
+    }
+
+    return(final_data)
 }

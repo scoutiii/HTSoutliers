@@ -9,7 +9,7 @@ Authors@R:
 Description: This package was created to hold all code produced during Scout's
     URCO grant research into detecting outliers in snow depth data from the
     Global Historical Climatalogical Network Daily (GHCN-D).
-License: MIT + file LICENSE
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -17,4 +17,9 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat
 Imports: 
-    snowload2
+    snowload2,
+    dplyr,
+    datasets,
+    base
+Depends: 
+    R (>= 2.10)

@@ -26,6 +26,8 @@ This is a wrapper function for the 3 main get_x_data functions in snowload2
 \details{
 You can enter in a list containing states, station IDS, and eco regions
 all at once, and get the weather data from all of them in one data frame.
+
+NOTE: ECO REGIONS NOT SUPPORTED YET
 }
 \examples{
 # data <- get_weather_data(C("UT", "BF1BI000001", "8.2.4"), "D:/Data/ghcnd_all/")
