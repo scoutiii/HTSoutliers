@@ -10,6 +10,7 @@
 #'
 #' @param locations character
 #' @param path character
+#' @param elem vector of which elements to be retrieved
 #' @param ... other arguments
 #'
 #' @return data.frame
@@ -19,6 +20,7 @@
 #' # data <- get_weather_data(C("UT", "BF1BI000001", "8.2.4"), "D:/Data/ghcnd_all/")
 get_weather_data <- function(locations,
                              path = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/",
+                             elem = c("SNWD", "WESD", "PRCP", "TMIN", "TMAX", "SNOW"),
                              ...) {
 
     final_data <- NULL
@@ -27,10 +29,10 @@ get_weather_data <- function(locations,
         print(location)
         new_data <- NULL
         if (base::toupper(location) %in% datasets::state.abb) {
-            new_data <- snowload2::get_state_data(location, path, ...)
+            new_data <- snowload2::get_state_data(location, path, elem, ...)
         }
         else if (location %in% snowload2::ghcnd_stations$ID) {
-            new_data <- snowload2::get_station_data(location, path, ...)
+            new_data <- snowload2::get_station_data(location, path, elem, ...)
         }
 
         if (base::is.null(final_data)) {

@@ -2,6 +2,7 @@
 
 export("%>%")
 export(create_flagged_dataset)
+export(create_model_variables)
 export(get_weather_data)
 importFrom(dplyr,.data)
 importFrom(magrittr,"%>%")

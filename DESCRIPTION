@@ -22,6 +22,7 @@ Imports:
     datasets,
     base,
     lubridate,
-    magrittr
+    magrittr,
+    stats
 Depends: 
     R (>= 2.10)

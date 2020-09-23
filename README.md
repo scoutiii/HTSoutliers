@@ -35,6 +35,8 @@ locations as you want, and mix the type of locations. For example you
 can get two different states data, along with some other stations which
 lie outside of those states, and include a desired ecoregion.
 
+OUTLIER VARIABLES: SNWD WESD PRCP TMIN TMAX
+
 ``` r
 library(HTSoutliers)
 

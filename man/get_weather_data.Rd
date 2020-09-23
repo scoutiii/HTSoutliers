@@ -7,6 +7,7 @@
 get_weather_data(
   locations,
   path = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/",
+  elem = c("SNWD", "WESD", "PRCP", "TMIN", "TMAX", "SNOW"),
   ...
 )
 }
@@ -14,6 +15,8 @@ get_weather_data(
 \item{locations}{character}
 
 \item{path}{character}
+
+\item{elem}{vector of which elements to be retrieved}
 
 \item{...}{other arguments}
 }
