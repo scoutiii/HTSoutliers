@@ -33,9 +33,9 @@ create_flagged_dataset <- function(data,
         # picks out the needed variables
         dplyr::select(.data$ID, .data$ELEMENT, .data$DATE, .data$VALUE, .data$QFLAG, .data$Spooky, .data$OUTLIER) %>%
         # sets the na values to 0
-        dplyr::mutate(OUTLIER = ifelse(is.na(.data$OUTLIER), 0, 1)) %>%
+        dplyr::mutate(OUTLIER = base::ifelse(is.na(.data$OUTLIER), 0, 1)) %>%
         # flags all values that satisfy any of the conditions
-        dplyr::mutate(OUTLIER_FINAL = ifelse(.data$QFLAG != " " | .data$Spooky | .data$OUTLIER == 1, 1, 0))
+        dplyr::mutate(OUTLIER_FINAL = base::ifelse(.data$QFLAG != " " | .data$Spooky | .data$OUTLIER == 1, 1, 0))
 
     if (clear_variables) {
         new_data <-  new_data %>%
