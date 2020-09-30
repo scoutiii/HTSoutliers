@@ -23,6 +23,7 @@ Imports:
     base,
     lubridate,
     magrittr,
-    stats
+    stats,
+    raster
 Depends: 
     R (>= 2.10)

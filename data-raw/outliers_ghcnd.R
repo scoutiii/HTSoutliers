@@ -2,6 +2,7 @@
 
 outliers_ghcnd <- snowload2::outlier_combined %>%
     dplyr::filter(OUTLIER != 0) %>%
-    dplyr::mutate(DATE = lubridate::as_date(DATE))
+    dplyr::mutate(DATE = lubridate::as_date(DATE)) %>%
+    dplyr::distinct()
 
 usethis::use_data(outliers_ghcnd, overwrite = TRUE)
