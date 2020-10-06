@@ -18,46 +18,16 @@
 create_model_variables <- function(data,
                                    complete = FALSE) {
 
-    #pivot wider
+    snow <- data %>% dplyr::filter(.data$ELEMENT == "SNWD") %>%
+        dplyr::select(.data$ID, .data$DATE, .data$OUTLIER_FINAL)
+    data <- data %>% dplyr::filter(!(.data$ELEMENT == "WESD" & .data$OUTLIER_FINAL == 1)) %>%
+        dplyr::select(-.data$OUTLIER_FINAL)
 
-    #NOTES measures data density
 
-    # Separates each element type into its own frame
-    WESD <- dplyr::filter(data, .data$ELEMENT == "WESD", .data$OUTLIER_FINAL == 0) %>%
-        dplyr::rename(WESD = .data$VALUE) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$WESD)
+    new_data <- data %>% tidyr::pivot_wider(names_from = .data$ELEMENT,
+                                            values_from = .data$VALUE) %>%
+        dplyr::left_join(snow, by=c("ID", "DATE"))
 
-    SNWD <- dplyr::filter(data, .data$ELEMENT == "SNWD") %>%
-        dplyr::rename(SNWD = .data$VALUE) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$SNWD, .data$OUTLIER_FINAL)
-
-    PRCP <- dplyr::filter(data, .data$ELEMENT == "PRCP") %>%
-        dplyr::rename(PRCP = .data$VALUE) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$PRCP)
-
-    SNOW <- dplyr::filter(data, .data$ELEMENT == "SNOW") %>%
-        dplyr::rename(SNOW = .data$VALUE) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$SNOW)
-
-    TMAX <- dplyr::filter(data, .data$ELEMENT == "TMAX") %>%
-        dplyr::rename(TMAX = .data$VALUE) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$TMAX)
-
-    TMIN <- dplyr::filter(data, .data$ELEMENT == "TMIN") %>%
-        dplyr::rename(TMIN = .data$VALUE) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$TMIN)
-
-    # Adds WESD, PRCP, SNOW, TMAX, TMIN, SNWD as separate variables
-    new_data <- dplyr::select(data, .data$ID, .data$DATE) %>%
-        dplyr::distinct() %>%
-        dplyr::left_join(WESD, by = c("ID", "DATE")) %>%
-        dplyr::left_join(PRCP, by = c("ID", "DATE")) %>%
-        dplyr::left_join(SNOW, by = c("ID", "DATE")) %>%
-        dplyr::left_join(TMAX, by = c("ID", "DATE")) %>%
-        dplyr::left_join(TMIN, by = c("ID", "DATE")) %>%
-        dplyr::left_join(SNWD, by = c("ID", "DATE")) %>%
-        dplyr::select(.data$ID, .data$DATE, .data$OUTLIER_FINAL, .data$SNWD, .data$WESD, .data$PRCP, .data$SNOW, .data$TMAX, .data$TMIN) %>%
-        dplyr::filter(!base::is.na(.data$SNWD))
 
     # Creates various date variables
     new_data <- new_data %>%
@@ -106,6 +76,8 @@ create_model_variables <- function(data,
                       ) %>%
         dplyr::filter(.data$MONTH_SD >= 0)
 
+    # snowload2::ghcnd_stations
+
 
     if (complete) {
         new_data <- dplyr::filter(new_data, stats::complete.cases(new_data))
@@ -114,3 +86,15 @@ create_model_variables <- function(data,
     return(new_data)
 
 }
+
+
+# temp <- snowload2::ghcnd_stations
+#
+# sp::coordinates(temp) <- c("LONGITUDE", "LATITUDE")
+#
+# sp::proj4string(temp) <- sp::proj4string(PRISM_climate_norms)
+#
+# # Create teh matrix of PRISM climate values (n (of GHCND_STATIONS) x 36)
+# tvalues <- raster::extract(PRISM_climate_norms, temp, method = "bilinear")
+#
+# # TODO: Figure out how to assign climate variables based on ID and month.

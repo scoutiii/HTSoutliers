@@ -24,6 +24,7 @@ Imports:
     lubridate,
     magrittr,
     stats,
-    raster
+    raster,
+    tidyr
 Depends: 
     R (>= 2.10)

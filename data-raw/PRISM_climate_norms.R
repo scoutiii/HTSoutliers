@@ -8,10 +8,8 @@ tfiles <- list.files("D:/Data/PRISM/PRISM_ppt_30yr_normal_800mM2_all_asc/",
 ppt <- vector("list", length = length(tfiles))
 for(i in 1:length(ppt)) {
     ppt[[i]] <- raster::raster(tfiles[i])
-    # names(ppt[[i]]) <- paste("PPT", i, sep = "")
 }
-# names(ppt) <- "PPT"
-# pptB <- raster::brick(ppt)
+
 
 # Compiles the max temperature
 tfiles <- list.files("D:/Data/PRISM/PRISM_tmax_30yr_normal_800mM2_all_asc/",
@@ -21,8 +19,6 @@ tmax <- vector("list", length = length(tfiles))
 for(i in 1:length(tmax)) {
     tmax[[i]] <- raster::raster(tfiles[i])
 }
-# names(tmax) <- "TMAX"
-# tmaxB <- raster::brick(tmax)
 
 # Compiles the min temperature
 tfiles <- list.files("D:/Data/PRISM/PRISM_tmin_30yr_normal_800mM2_all_asc/",
@@ -32,12 +28,8 @@ tmin <- vector("list", length = length(tfiles))
 for(i in 1:length(tmin)) {
     tmin[[i]] <- raster::raster(tfiles[i])
 }
-# names(tmin) <- "TMIN"
-# tminB <- raster::brick(tmin)
 
-# # Gets the elevation as well
-# elev <- raster::raster("D:/Data/PRISM/PRISM_us_dem_800m_asc/PRISM_us_dem_800m_asc.asc")
-# names(elev) <- "ELEV"
+
 
 PRISM_climate_norms <- raster::brick(ppt[[1]], ppt[[2]], ppt[[3]], ppt[[4]], ppt[[5]], ppt[[6]],
                                      ppt[[7]], ppt[[8]], ppt[[9]],ppt[[10]],ppt[[11]],ppt[[12]],

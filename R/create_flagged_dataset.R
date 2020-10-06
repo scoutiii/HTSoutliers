@@ -27,13 +27,13 @@ create_flagged_dataset <- function(data,
     new_data <- data %>%
         dplyr::filter(.data$DATE <= date_max) %>%
         # This line gets the spooky 1952
-        dplyr::mutate(Spooky = !(lubridate::year(.data$DATE) != 1952 | .data$ELEMENT != "WESD")) %>%
+        dplyr::mutate(Spooky = lubridate::year(.data$DATE) == 1952 & .data$ELEMENT != "WESD") %>%
         # basically marks the dataset with the outliers dataset
         dplyr::left_join(HTSoutliers::outliers_ghcnd, by = c("ID", "ELEMENT", "DATE", "VALUE")) %>%
         # picks out the needed variables
         dplyr::select(.data$ID, .data$ELEMENT, .data$DATE, .data$VALUE, .data$QFLAG, .data$Spooky, .data$OUTLIER) %>%
         # sets the na values to 0
-        dplyr::mutate(OUTLIER = base::ifelse(is.na(.data$OUTLIER), 0, 1)) %>%
+        dplyr::mutate(OUTLIER = base::ifelse(base::is.na(.data$OUTLIER), 0, .data$OUTLIER)) %>%
         # flags all values that satisfy any of the conditions
         dplyr::mutate(OUTLIER_FINAL = base::ifelse(.data$QFLAG != " " | .data$Spooky | .data$OUTLIER == 1, 1, 0))
 
