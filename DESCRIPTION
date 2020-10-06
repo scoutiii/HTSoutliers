@@ -25,6 +25,7 @@ Imports:
     magrittr,
     stats,
     raster,
-    tidyr
+    tidyr,
+    sp
 Depends: 
     R (>= 2.10)

@@ -39,4 +39,14 @@ PRISM_climate_norms <- raster::brick(ppt[[1]], ppt[[2]], ppt[[3]], ppt[[4]], ppt
                                      tmax[[7]], tmax[[8]], tmax[[9]],tmax[[10]],tmax[[11]],tmax[[12]]
                                      )
 
+# finds the raster values for each ghcnd station, stations are on the y-axis
+temp <- snowload2::ghcnd_stations
+sp::coordinates(temp) <- c("LONGITUDE", "LATITUDE")
+sp::proj4string(temp) <- sp::proj4string(PRISM_climate_norms)
+# Create the matrix of PRISM climate values (n (of GHCND_STATIONS) x 36)
+tvalues <- raster::extract(PRISM_climate_norms, temp, method = "bilinear")
+ttvalue <- as.data.frame(tvalues)
+ttvalue[["ID"]] <- temp$ID
+PRISM_climate_norms <- ttvalue
+
 usethis::use_data(PRISM_climate_norms, overwrite = TRUE)
