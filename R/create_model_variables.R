@@ -83,7 +83,7 @@ create_model_variables <- function(data,
 
 
     # gets PRISM variables
-    MONTH <- NULL
+    MONTH <- NULL  # These are just so that check doesn't give a note
     PRISM_PPT <- NULL
     PRISM_TMIN <- NULL
     PRISM_TMAX <- NULL
@@ -113,17 +113,9 @@ create_model_variables <- function(data,
     new_data$YEAR <- NULL
     new_data$WEEK <- NULL
 
+    new_data$OUTLIER_FINAL <- base::as.factor(new_data$OUTLIER_FINAL)
+
+    new_data %>% dplyr::ungroup()
+
     return(new_data)
 }
-
-
-# temp <- snowload2::ghcnd_stations
-#
-# sp::coordinates(temp) <- c("LONGITUDE", "LATITUDE")
-#
-# sp::proj4string(temp) <- sp::proj4string(PRISM_climate_norms)
-#
-# # Create teh matrix of PRISM climate values (n (of GHCND_STATIONS) x 36)
-# tvalues <- raster::extract(PRISM_climate_norms, temp, method = "bilinear")
-#
-# # TODO: Figure out how to assign climate variables based on ID and month.
