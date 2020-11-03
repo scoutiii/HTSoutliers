@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_outliers.R
 \name{plot_outliers}
 \alias{plot_outliers}
-\title{Title}
+\title{Plot outliers}
 \usage{
 plot_outliers(data, id)
 }
@@ -15,5 +15,17 @@ plot_outliers(data, id)
 plotly plot
 }
 \description{
-Title
+Once you have flagged outliers using any model (randomForest for example),
+you can plot the outliers that have already been flagged vs the one you have flagged
+}
+\details{
+This will show known outliers as triangles, and points you predict
+to be outliers as blue. So a blue triangle is a point you marked as an outlier
+that we also found to be an outlier. A green triangle is a point we found to be
+and outlier and you did not. A blue circle is a point you flagged as an outlier
+that we did not. And a green circle is a point neither you nor we flagged.
+
+Note that you must have at least SNWD, OUTLIER_FINAL, ID, DATE, and OUTLIER_PRED
+in order to use this function. You will need to manually create the
+OUTLIER_PRED variable
 }
