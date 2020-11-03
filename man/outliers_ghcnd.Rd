@@ -5,20 +5,21 @@
 \alias{outliers_ghcnd}
 \title{A data set which is formated for use in the create_flagged_Dataset function}
 \format{
-A data frame with 763323 rows and 8 variables:
+A data frame with 671352 rows and 9 variables:
 \describe{
-\item{ID}{the weather station ID}
-\item{DATE}{date of the flagged outlier}
-\item{ELEMENT}{the element type of the outlier, i.e. SNWD or WESD}
-\item{VALUE}{the value in mm (WESD was converted from 10ths mm to mm)}
-\item{FLAGGED}{the method used to flag the outlier}
-\item{OUTLIER}{will always be 1 since this contains all outliers}
-\item{TYPE}{further describes how the observation was flagged}
-\item{YEAR}{the year of the outlier}
+\item{ID}{The weather station ID}
+\item{DATE}{Date of the flagged outlier}
+\item{ELEMENT}{The element type of the outlier, i.e. SNWD or WESD}
+\item{VALUE}{The value in mm (WESD will be in 10ths of mm, divide by 10 to get mm)}
+\item{FLAGGED}{The method used to flag the outlier}
+\item{OUTLIER}{Will always be 1 since this contains all outliers}
+\item{TYPE}{Further describes how the observation was flagged}
+\item{YEAR}{The year of the outlier}
+\item{name}{The name of who flagged the outlier}
 }
 }
 \source{
-snowload2::outliers_combined
+snowload2::outliers_combined modified by Brennan Bean to add the name
 }
 \usage{
 outliers_ghcnd

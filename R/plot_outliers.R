@@ -3,13 +3,12 @@
 #'
 #' @param data full data frame with at least SNWD, OUTLIER_FINAL, ID, DATE, OUTLIER_PRED
 #' @param id the id for the station you want to plot
-#' @param ...
 #'
 #' @return plotly plot
 #' @export
 #'
 #' @examples
-plot_outliers <- function(data, id, ...) {
+plot_outliers <- function(data, id) {
   data <- data %>% dplyr::filter(.data$ID == id)
   stations_info <- dplyr::filter(snowload2::ghcnd_stations, .data$ID == id)
   state <- usdata::abbr2state(stations_info$STATE)

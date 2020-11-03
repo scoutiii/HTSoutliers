@@ -31,7 +31,8 @@ create_flagged_dataset <- function(data,
         # basically marks the dataset with the outliers dataset
         dplyr::left_join(HTSoutliers::outliers_ghcnd, by = c("ID", "ELEMENT", "DATE", "VALUE")) %>%
         # picks out the needed variables
-        dplyr::select(.data$ID, .data$ELEMENT, .data$DATE, .data$VALUE, .data$QFLAG, .data$Spooky, .data$OUTLIER) %>%
+        dplyr::select(.data$ID, .data$ELEMENT, .data$DATE, .data$VALUE, .data$QFLAG,
+                      .data$Spooky, .data$OUTLIER, .data$name) %>%
         # sets the na values to 0
         dplyr::mutate(OUTLIER = base::ifelse(base::is.na(.data$OUTLIER), 0, .data$OUTLIER)) %>%
         # flags all values that satisfy any of the conditions
@@ -39,7 +40,8 @@ create_flagged_dataset <- function(data,
 
     if (clear_variables) {
         new_data <-  new_data %>%
-            dplyr::select(.data$ID, .data$ELEMENT, .data$DATE, .data$VALUE, .data$OUTLIER_FINAL)
+            dplyr::select(.data$ID, .data$ELEMENT, .data$DATE,
+                          .data$VALUE, .data$OUTLIER_FINAL, .data$name)
     }
 
     return(new_data)

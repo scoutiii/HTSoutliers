@@ -37,8 +37,9 @@ subset_dataset <- function(data,
   ones <- dplyr::filter(data, .data$OUTLIER_FINAL == 1)
   zeros <- dplyr::filter(data, .data$OUTLIER_FINAL == 0)
 
-  try(if(zeros_to_one * base::nrow(ones) > base::nrow(zeros))
-    base::stop("Zeros_to_one too large"))
+  if(zeros_to_one * base::nrow(ones) > base::nrow(zeros)) {
+    base::stop("Zeros_to_one too large")
+  }
 
   zeros <- zeros[base::sample(1:base::nrow(zeros),
                               zeros_to_one*base::nrow(ones)), ]
