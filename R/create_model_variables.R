@@ -25,10 +25,15 @@ create_model_variables <- function(data,
         dplyr::select(-.data$OUTLIER_FINAL)
 
     # takes the elements and makes them their own variable
-    new_data <- data %>% tidyr::pivot_wider(names_from = .data$ELEMENT,
+    new_data <- data %>%
+        dplyr::distinct() %>%
+        tidyr::pivot_wider(names_from = .data$ELEMENT,
                                             values_from = .data$VALUE) %>%
         dplyr::left_join(snow, by=c("ID", "DATE")) %>%
         dplyr::filter(!is.na(.data$SNWD))
+
+    new_data <- new_data %>% dplyr::group_by(.data$ID) %>%
+        dplyr::filter(dplyr::n() > 1)
 
     # Filters down to the complete cases
     if (complete) {
@@ -114,8 +119,9 @@ create_model_variables <- function(data,
     new_data$WEEK <- NULL
 
     new_data$OUTLIER_FINAL <- base::as.factor(new_data$OUTLIER_FINAL)
+    new_data$MONTH <- base::as.factor(new_data$MONTH)
 
-    new_data %>% dplyr::ungroup()
+    new_data <- new_data %>% dplyr::ungroup()
 
     return(new_data)
 }

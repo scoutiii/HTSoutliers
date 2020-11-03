@@ -26,6 +26,8 @@ Imports:
     stats,
     raster,
     tidyr,
-    sp
+    sp,
+    usdata,
+    plotly
 Depends: 
     R (>= 2.10)
