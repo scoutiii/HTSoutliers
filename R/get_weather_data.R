@@ -40,7 +40,7 @@ get_weather_data <- function(locations,
         }
         else {
             if (!base::is.null(new_data)) {
-                final_data <- dplyr::union(final_data, new_data)
+                final_data <- dplyr::bind_rows(final_data, new_data)
             }
         }
     }
