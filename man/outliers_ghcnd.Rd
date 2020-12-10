@@ -11,11 +11,8 @@ A data frame with 671352 rows and 9 variables:
 \item{DATE}{Date of the flagged outlier}
 \item{ELEMENT}{The element type of the outlier, i.e. SNWD or WESD}
 \item{VALUE}{The value in mm (WESD will be in 10ths of mm, divide by 10 to get mm)}
-\item{FLAGGED}{The method used to flag the outlier}
-\item{OUTLIER}{Will always be 1 since this contains all outliers}
-\item{TYPE}{Further describes how the observation was flagged}
-\item{YEAR}{The year of the outlier}
-\item{name}{The name of who flagged the outlier}
+\item{OUTLIER}{Always 1 indicating it is an outlier}
+\item{TYPE}{MANUAL if I manually verified it to be an outlier, QFLAG if the GHCN_D qflag was not empty (indicating it is an invalid observation)}
 }
 }
 \source{
