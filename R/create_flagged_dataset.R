@@ -10,7 +10,6 @@
 #'
 #' @param data the dataset which is to be flagged
 #' @param date_max observations after this as.Date() will be removed
-#' @param clear_variables leaves variables ID, ELEMENT, DATE, VALUE, OUTLIER_FINAL
 #'
 #' @return data frame which has
 #' @export
@@ -21,28 +20,25 @@
 #' # UT <- get_weather_data("UT")
 #' # UT_flagged <- create_flagged_dataset(UT)
 create_flagged_dataset <- function(data,
-                                   date_max = base::as.Date("2020-8-1"),
-                                   clear_variables = TRUE) {
+                                   date_max = base::as.Date("2020-8-1")) {
 
     new_data <- data %>%
-        dplyr::filter(.data$DATE <= date_max) %>%
-        # This line gets the spooky 1952
-        dplyr::mutate(Spooky = lubridate::year(.data$DATE) == 1952 & .data$ELEMENT != "WESD") %>%
+        dplyr::filter(.data$DATE <= date_max)
+        # This line filters out spooky 1952
+    new_data <- new_data  %>%
+        dplyr::filter(!(lubridate::year(.data$DATE) == 1952 & .data$ELEMENT == "WESD"))
+    new_data <- new_data  %>%
         # basically marks the dataset with the outliers dataset
-        dplyr::left_join(HTSoutliers::outliers_ghcnd, by = c("ID", "ELEMENT", "DATE", "VALUE")) %>%
+        dplyr::left_join(HTSoutliers::outliers_ghcnd, by = c("ID", "ELEMENT", "DATE", "VALUE"))
+    new_data <- new_data  %>%
         # picks out the needed variables
-        dplyr::select(.data$ID, .data$ELEMENT, .data$DATE, .data$VALUE, .data$QFLAG,
-                      .data$Spooky, .data$OUTLIER, .data$name) %>%
+        dplyr::select(.data$ID, .data$DATE, .data$ELEMENT, .data$VALUE, .data$OUTLIER, .data$TYPE)
+    new_data <- new_data  %>%
         # sets the na values to 0
-        dplyr::mutate(OUTLIER = base::ifelse(base::is.na(.data$OUTLIER), 0, .data$OUTLIER)) %>%
-        # flags all values that satisfy any of the conditions
-        dplyr::mutate(OUTLIER_FINAL = base::ifelse(.data$QFLAG != " " | .data$Spooky | .data$OUTLIER == 1, 1, 0))
+        dplyr::mutate(OUTLIER_FINAL = base::ifelse(base::is.na(.data$OUTLIER), 0, .data$OUTLIER),
+                      TYPE = base::ifelse(base::is.na(.data$TYPE), "", .data$TYPE)) %>%
+        dplyr::select(-.data$OUTLIER)
 
-    if (clear_variables) {
-        new_data <-  new_data %>%
-            dplyr::select(.data$ID, .data$ELEMENT, .data$DATE,
-                          .data$VALUE, .data$OUTLIER_FINAL, .data$name)
-    }
 
     return(new_data)
 }

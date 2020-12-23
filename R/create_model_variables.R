@@ -32,6 +32,9 @@ create_model_variables <- function(data,
         dplyr::left_join(snow, by=c("ID", "DATE")) %>%
         dplyr::filter(!is.na(.data$SNWD))
 
+    base::rm(snow)
+    base::gc()
+
     new_data <- new_data %>% dplyr::group_by(.data$ID) %>%
         dplyr::filter(dplyr::n() > 1)
 
@@ -86,6 +89,8 @@ create_model_variables <- function(data,
                       ) %>%
         dplyr::filter(.data$MONTH_SD >= 0)  # Filters out empty months
 
+    base::rm(data)
+    base::gc()
 
     # gets PRISM variables
     MONTH <- NULL  # These are just so that check doesn't give a note

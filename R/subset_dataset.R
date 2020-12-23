@@ -38,11 +38,11 @@ subset_dataset <- function(data,
   zeros <- dplyr::filter(data, .data$OUTLIER_FINAL == 0)
 
   if(zeros_to_one * base::nrow(ones) > base::nrow(zeros)) {
-    base::stop("Zeros_to_one too large")
+    base::stop("Zeros_to_one too large.")
   }
 
   zeros <- zeros[base::sample(1:base::nrow(zeros),
-                              zeros_to_one*base::nrow(ones)), ]
+                              zeros_to_one * base::nrow(ones)), ]
 
   new_data <- dplyr::bind_rows(ones, zeros)
   new_data <- new_data[base::sample(1:base::nrow(new_data),

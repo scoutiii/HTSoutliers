@@ -39,7 +39,8 @@ plot_outliers <- function(data, id) {
                           size = ~size,
                           color = ~OUTLIER_PRED,
                           text = ~base::paste("Actual :", OUTLIER_FINAL,
-                                              "Predicted :", OUTLIER_PRED)
+                                              "\nPredicted :", OUTLIER_PRED,
+                                              "\nTYPE : ", TYPE)
                           )
   plot <- plot %>% plotly::layout(title = paste(state, name, id, sep = " : "),
                                   font = list(size = 10))
