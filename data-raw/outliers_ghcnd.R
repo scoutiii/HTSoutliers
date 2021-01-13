@@ -59,5 +59,9 @@ out_tally <- outliers_ghcnd %>%
 outliers_ghcnd <- outliers_ghcnd %>%
   dplyr::filter(ID %in% out_tally$ID)
 
+outliers_ghcnd$TYPE <- as.factor(outliers_ghcnd$TYPE)
+outliers_ghcnd$ID <- as.factor(outliers_ghcnd$ID)
+outliers_ghcnd$ELEMENT <- as.factor(outliers_ghcnd$ELEMENT)
+
 
 usethis::use_data(outliers_ghcnd, overwrite = TRUE)

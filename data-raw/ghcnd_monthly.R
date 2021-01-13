@@ -1,6 +1,5 @@
 library(tidyverse)
-library(HTSoutliers)
-
+load_all()
 
 ppt <- HTSoutliers::PRISM_climate_norms[,c(1:12, 37)]  # 1:12 corresponds to PPT variables
 names(ppt) <- c(1:12, "ID")
@@ -42,12 +41,15 @@ for (state in state.abb) {
                   Q1 = quantile(VALUE, .25),
                   Q3 = quantile(VALUE, .75),
                   N = dplyr::n(),
-                  DIFF = c(NA, diff(VALUE)),
-                  MAXDIFF = max(DIFF, na.rm = TRUE),
-                  MINDIFF = min(DIFF, na.rm = TRUE)
+                  DIFF = c(NA, diff(VALUE)) / c(NA, diff(DATE)),  # Recent change to divide by N
+                  MAXDIFFSCALED = max(hablar::s(DIFF)),
+                  MINDIFFSCALED = min(hablar::s(DIFF)),
+                  DIFFRAW = c(NA, diff(VALUE)),
+                  MAXDIFFRAW = max(hablar::s(DIFFRAW)),
+                  MINDIFFRAW = min(hablar::s(DIFFRAW))
                   ) %>%
     dplyr::filter(N >= 5) %>%
-    dplyr::select(-c(DATE, ELEMENT, VALUE, MFLAG, QFLAG, SFLAG, DIFF)) %>%
+    dplyr::select(-c(DATE, ELEMENT, VALUE, MFLAG, QFLAG, SFLAG, DIFF, DIFFRAW)) %>%
     dplyr::distinct()
 
   data <- data %>%
@@ -61,13 +63,34 @@ for (state in state.abb) {
   }
   else {
     ghcnd_monthly <- ghcnd_monthly %>%
-      dplyr::bind_rows(data) %>%
-      dplyr::distinct()
+      dplyr::bind_rows(data)
   }
   temp <- ghcnd_monthly
   gc()
 }
+ghcnd_monthly$ID <- as.factor(ghcnd_monthly$ID)
 
+outliers <- outliers_ghcnd %>%
+  dplyr::filter(ELEMENT == "SNWD") %>%
+  dplyr::mutate(YEAR = lubridate::year(DATE),
+                MONTH = lubridate::month(DATE)) %>%
+  dplyr::group_by(ID, YEAR, MONTH, .add = TRUE) %>%
+  dplyr::mutate(NOUT = dplyr::n(),
+                TYPEOUT = ifelse(length(unique(TYPE)) == 2,
+                                 "BOTH",
+                                 as.character(unique(TYPE)))) %>%
+  dplyr::select(ID, YEAR, MONTH, NOUT, TYPEOUT) %>%
+  dplyr::distinct()
 
+ghcnd_monthly <- ghcnd_monthly %>%
+  dplyr::left_join(outliers) %>%
+  dplyr::mutate(NOUT = ifelse(is.na(NOUT), 0, NOUT),
+                TYPEOUT = ifelse(is.na(TYPEOUT), "NONE", TYPEOUT))
+ghcnd_monthly$TYPEOUT <- as.factor(ghcnd_monthly$TYPEOUT)
+
+ghcnd_monthly <- ghcnd_monthly %>%
+  dplyr::filter(!is.na(PRISM_PPT),
+                !is.na(PRISM_TMIN),
+                !is.na(PRISM_TMAX))
 
 usethis::use_data(ghcnd_monthly, overwrite = TRUE)
