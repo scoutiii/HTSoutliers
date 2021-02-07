@@ -93,4 +93,9 @@ ghcnd_monthly <- ghcnd_monthly %>%
                 !is.na(PRISM_TMIN),
                 !is.na(PRISM_TMAX))
 
+ghcnd_monthly <- ghcnd_monthly %>%
+  dplyr::filter(MIN >= 0,
+                MEDIAN >= 0,
+                MEAN >= 0)
+
 usethis::use_data(ghcnd_monthly, overwrite = TRUE)

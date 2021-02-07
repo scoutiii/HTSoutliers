@@ -21,7 +21,7 @@ outliers_ghcnd <- outlier_combined %>%
 
 # Reflagged based on my manual search of the others outliers
 ### VERSION 3
-temp <- read.csv("C://Users/scout/Box/URCO_2020_Scout_Jarman/data/scout_outlier_check_combined.csv")
+temp <- read.csv("C://Users/scout/Box/Jarman_Scout_URCO_2020/data/scout_outlier_check_combined.csv")
 outliers_ghcnd <- temp %>%
   dplyr::mutate(DATE = lubridate::as_date(DATE)) %>%
   dplyr::distinct()
