@@ -60,5 +60,12 @@ for (id in non_outlier_ids$ID) {
 }
 save(train_data_non_outliers, file = "D:/RCode/URCO/Packages/train_non_outliers.rda")
 
+
+
+load("D:/RCode/URCO/Packages/train_non_outliers.rda")
+load("D:/RCode/URCO/Packages/train_outliers.rda")
+
 outliers_ghcnd_training_set <- dplyr::bind_rows(train_data_outliers,
                                                 train_data_non_outliers)
+
+usethis::use_data(outliers_ghcnd_training_set, overwrite = TRUE)
