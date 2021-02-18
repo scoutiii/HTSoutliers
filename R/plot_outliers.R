@@ -21,9 +21,13 @@
 #'
 #' @examples
 plot_outliers <- function(data, id) {
-  data <- data %>% dplyr::filter(.data$ID == id)
+  data <- data %>% dplyr::filter(.data$ID == id) %>%
+    dplyr::mutate(interaction = base::interaction(.data$OUTLIER_FINAL,
+                                                  .data$OUTLIER_PRED))
+
   stations_info <- dplyr::filter(snowload2::ghcnd_stations, .data$ID == id)
   state <- usdata::abbr2state(stations_info$STATE)
+
   if(base::is.na(state)) {
     state <- stations_info$STATE
   }
@@ -37,10 +41,11 @@ plot_outliers <- function(data, id) {
                           type = "scatter", mode = "markers",
                           symbol = ~OUTLIER_FINAL,
                           size = ~size,
-                          color = ~OUTLIER_PRED,
+                          color = ~interaction,
                           text = ~base::paste("Actual :", OUTLIER_FINAL,
                                               "\nPredicted :", OUTLIER_PRED,
-                                              "\nTYPE : ", TYPE)
+                                              "\nTYPE : ", TYPE,
+                                              "\nInteraction:", interaction)
                           )
   plot <- plot %>% plotly::layout(title = paste(state, name, id, sep = " : "),
                                   font = list(size = 10))

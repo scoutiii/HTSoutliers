@@ -36,6 +36,7 @@ create_flagged_dataset <- function(data,
     new_data <- new_data  %>%
         # sets the na values to 0
         dplyr::mutate(OUTLIER_FINAL = base::ifelse(base::is.na(.data$OUTLIER), 0, .data$OUTLIER),
+                      OUTLIER_FINAL = as.factor(OUTLIER_FINAL),
                       TYPE = base::ifelse(base::is.na(.data$TYPE), "", .data$TYPE)) %>%
         dplyr::select(-.data$OUTLIER)
 
